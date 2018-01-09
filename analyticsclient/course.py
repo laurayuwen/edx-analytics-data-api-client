@@ -81,6 +81,33 @@ class Course(object):
         path += '?{0}'.format(querystring)
 
         return self.client.get(path, data_format=data_format)
+    
+    def monthly_activity(self, activity_type=AT.ANY, start_date=None, end_date=None, data_format=DF.JSON):
+        """
+        Get the course student activity(monthly).
+
+        Arguments:
+            activity_type (str): The type of recent activity to return. Defaults to ANY.
+            data_format (str): Format in which data should be returned
+        """
+        if not activity_type:
+            raise InvalidRequestError('activity_type cannot be None.')
+
+        params = {
+            'activity_type': activity_type
+        }
+
+        if start_date:
+            params['start_date'] = start_date
+
+        if end_date:
+            params['end_date'] = end_date
+
+        path = 'courses/{0}/monthly_activity/'.format(self.course_id)
+        querystring = urllib.urlencode(params)
+        path += '?{0}'.format(querystring)
+
+        return self.client.get(path, data_format=data_format)
 
     def recent_activity(self, activity_type=AT.ANY, data_format=DF.JSON):
         """
